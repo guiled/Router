@@ -401,6 +401,7 @@ class Http extends Generic implements \Hoa\Core\Parameter\Parameterizable {
         $rule[Router::RULE_VARIABLES]['_call']      = &$rule[Router::RULE_CALL];
         $rule[Router::RULE_VARIABLES]['_able']      = &$rule[Router::RULE_ABLE];
         $rule[Router::RULE_VARIABLES]['_request']   =  $_REQUEST;
+        $rule[Router::RULE_VARIABLES]['_unnamed']   =  array();
 
         $caseless = 0 === preg_match(
             '#\(\?\-[imsxUXJ]+\)#',
@@ -409,8 +410,9 @@ class Http extends Generic implements \Hoa\Core\Parameter\Parameterizable {
 
         foreach(array_merge($muri, $msubdomain) as $key => $value) {
 
-            if(!is_string($key))
-                continue;
+            if(!is_string($key)) {
+                $rule[Router::RULE_VARIABLES]['_unnamed'][$key] = $value;
+            }
 
             if(true === $caseless)
                 $key = mb_strtolower($key);
